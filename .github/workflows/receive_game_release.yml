@@ -1,7 +1,7 @@
 name: Receive Game Release
 
 # Triggered by repository_dispatch from the game repo when a new game version is released.
-# Updates the pinned "Latest Version" issue and posts a release announcement.
+# Posts a release announcement issue for launcher users.
 #
 # Requires: CROSS_REPO_PAT secret (same PAT as in game repo, repo scope)
 
@@ -23,7 +23,6 @@ jobs:
             const version = context.payload.client_payload.version;
             const releaseUrl = context.payload.client_payload.release_url;
 
-            // Create a release announcement issue
             const issue = await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -34,8 +33,8 @@ jobs:
                 `**Download**: [GitHub Release](${releaseUrl})`,
                 '',
                 '### How to update',
-                '1. Open the launcher — it will detect the new version automatically',
-                '2. Click "Update" to download and verify the new game exe',
+                '1. Open the launcher - it will detect the new version automatically',
+                '2. Click "Update" to download and verify the latest release assets',
                 '',
                 '### Issues?',
                 'Report at [indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback/issues/new/choose)',
