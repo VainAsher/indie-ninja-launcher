@@ -1,72 +1,72 @@
-name: Release Launcher
+name: Mirror Game Release Assets (Manual)
 
-# Manual lane for building and publishing ninja_dash_launcher.exe.
-# This repo currently requires launcher source/spec files to be mirrored before build:
-#   - launcher/launcher.py
-#   - build/ninja_dash_launcher.spec
+# Manual distribution-only lane.
+# Mirrors assets from a game release tag into this launcher distribution repo.
 
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        description: "Release tag (example: v1.1.1)"
+      game_tag:
+        description: "Game release tag to mirror (example: v0.11.72)"
         required: true
         type: string
 
 permissions:
   contents: write
 
+env:
+  GAME_REPO: VainAsher/indie-ninja-adventures
+
 jobs:
-  build-and-release:
-    name: Build and Release Launcher
-    runs-on: windows-latest
+  mirror-release:
+    name: Mirror Assets to Launcher Release
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Validate required build files
-        shell: pwsh
-        run: |
-          if (-not (Test-Path "launcher/launcher.py")) {
-            Write-Error "Missing launcher/launcher.py. Sync launcher source into this repo before running release workflow."
-            exit 1
-          }
-          if (-not (Test-Path "build/ninja_dash_launcher.spec")) {
-            Write-Error "Missing build/ninja_dash_launcher.spec. Sync launcher spec into this repo before running release workflow."
-            exit 1
-          }
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
-
-      - name: Build launcher exe
-        working-directory: build
-        run: pyinstaller --clean ninja_dash_launcher.spec
-
-      - name: Verify launcher exe exists
-        shell: pwsh
-        run: |
-          if (-not (Test-Path "build/dist/ninja_dash_launcher.exe")) {
-            Write-Error "Missing: build/dist/ninja_dash_launcher.exe"
-            exit 1
-          }
-          Write-Host "Launcher exe built successfully."
-
-      - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.tag }}
+      - name: Resolve tag
         shell: bash
         run: |
-          gh release create "$RELEASE_TAG" \
-            --title "Indie Ninja Adventures Launcher $RELEASE_TAG" \
-            --generate-notes \
-            "build/dist/ninja_dash_launcher.exe"
+          set -euo pipefail
+          TAG="${{ inputs.game_tag }}"
+          if [ -z "$TAG" ]; then
+            echo "Missing required input: game_tag"
+            exit 1
+          fi
+          echo "GAME_TAG=$TAG" >> "$GITHUB_ENV"
+
+      - name: Download assets from game release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf mirrored-assets
+          mkdir -p mirrored-assets
+          gh release download "$GAME_TAG" -R "$GAME_REPO" -D mirrored-assets
+          if [ -z "$(ls -A mirrored-assets)" ]; then
+            echo "No assets downloaded for $GAME_TAG"
+            exit 1
+          fi
+          ls -lah mirrored-assets
+
+      - name: Ensure launcher release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$GAME_TAG" >/dev/null 2>&1; then
+            echo "Release $GAME_TAG already exists"
+          else
+            gh release create "$GAME_TAG" \
+              --title "Indie Ninja Adventures $GAME_TAG" \
+              --notes "Mirrored distribution assets from $GAME_REPO release $GAME_TAG."
+          fi
+
+      - name: Upload mirrored assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release upload "$GAME_TAG" mirrored-assets/* --clobber
