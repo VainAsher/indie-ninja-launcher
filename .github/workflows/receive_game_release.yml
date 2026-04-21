@@ -13,6 +13,7 @@ permissions:
 
 env:
   GAME_REPO: VainAsher/indie-ninja-adventures
+  LAUNCHER_REPO: VainAsher/indie-ninja-launcher
 
 jobs:
   mirror-and-announce:
@@ -30,7 +31,7 @@ jobs:
             exit 1
           fi
           echo "GAME_TAG=$TAG" >> "$GITHUB_ENV"
-          echo "MIRROR_RELEASE_URL=https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}" >> "$GITHUB_ENV"
+          echo "MIRROR_RELEASE_URL=https://github.com/${LAUNCHER_REPO}/releases/tag/${TAG}" >> "$GITHUB_ENV"
 
       - name: Download game release assets
         env:
@@ -53,10 +54,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if gh release view "$GAME_TAG" >/dev/null 2>&1; then
+          if gh release view "$GAME_TAG" -R "$LAUNCHER_REPO" >/dev/null 2>&1; then
             echo "Launcher release $GAME_TAG already exists"
           else
-            gh release create "$GAME_TAG" \
+            gh release create "$GAME_TAG" -R "$LAUNCHER_REPO" \
               --title "Indie Ninja Adventures $GAME_TAG" \
               --notes "Mirrored distribution assets from $GAME_REPO release $GAME_TAG."
           fi
@@ -67,7 +68,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh release upload "$GAME_TAG" mirrored-assets/* --clobber
+          gh release upload "$GAME_TAG" -R "$LAUNCHER_REPO" mirrored-assets/* --clobber
 
       - name: Post release announcement issue
         uses: actions/github-script@v7
