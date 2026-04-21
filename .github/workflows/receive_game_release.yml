@@ -2,12 +2,14 @@ name: Receive Game Release
 
 # Triggered by repository_dispatch from the game repo when a new game version is released.
 # Posts a release announcement issue for launcher users.
-#
-# Requires: CROSS_REPO_PAT secret (same PAT as in game repo, repo scope)
 
 on:
   repository_dispatch:
     types: [game-release]
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   announce-release:
@@ -18,7 +20,7 @@ jobs:
       - name: Post release announcement issue
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.CROSS_REPO_PAT }}
+          github-token: ${{ github.token }}
           script: |
             const version = context.payload.client_payload.version;
             const releaseUrl = context.payload.client_payload.release_url;
