@@ -7,6 +7,15 @@ For full technical details, see the game repo changelog:
 
 ---
 
+## v1.1.1 - April 2026 (launcher runtime hotfix)
+
+- Fix report submission reliability for long issue bodies.
+- When a prefilled issue URL is too long, launcher now:
+  - opens a shorter issue page
+  - copies full report details to clipboard for paste
+
+---
+
 ## v0.12.00 - April 2026 (game-content mirror)
 
 - Distribution lane now mirrors Java runtime assets from game releases:

@@ -8,7 +8,7 @@ Public distribution and player-facing docs for Shadow Ascent.
 
 Use [Releases](https://github.com/VainAsher/indie-ninja-launcher/releases) and pick assets based on what you need:
 
-- `ninja_dash_launcher.exe` from launcher-runtime tags (`v1.x`, currently `v1.1.0`)
+- `ninja_dash_launcher.exe` from launcher-runtime tags (`v1.x`, currently `v1.1.1`)
 - mirrored game runtime assets from game-content tags (`v0.x`), including:
   - `ninja-client-all.jar`
   - `ninja-server-all.jar`
