@@ -1,6 +1,7 @@
 # Indie Ninja Adventures - Launcher Distribution
 
 Public distribution and player-facing docs for Shadow Ascent.
+This project is built in public, and player feedback directly shapes each release.
 
 ---
 
@@ -26,6 +27,20 @@ download `ninja_dash_launcher.exe` from the latest `v1.x` launcher-runtime relea
 - Launches solo, host, and join flows
 - Opens prefilled bug/feedback reports to the feedback repo
 - Includes Dev Tools for logs, replays, and diagnostics
+
+---
+
+## Why Community Feedback Matters
+
+The project is moving toward alpha, and high-quality player reports are the fastest
+way to improve feel, clarity, and stability.
+
+Helpful reports usually include:
+
+- what you were trying to do
+- what happened instead
+- your version tag and mode (solo/host/join)
+- optional log snippet from `user_data/logs/`
 
 ---
 
@@ -64,6 +79,8 @@ See [Installation Guide](docs/installation.md) for full setup.
 
 Use the launcher's Report tab, or file directly at
 [indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback/issues/new/choose).
+
+You are not expected to write a perfect bug report. Even short notes are useful.
 
 ---
 

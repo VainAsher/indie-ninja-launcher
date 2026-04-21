@@ -67,3 +67,15 @@ When reporting, include:
 
 Submit via launcher Report tab or
 [indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback/issues/new/choose).
+
+---
+
+## Community Testing Loop
+
+If you want to help tune the game during development:
+
+1. Pick one focus per session (movement, combat, mission flow, or multiplayer)
+2. Play 15-30 minutes
+3. Submit one clear note at the end
+
+This keeps feedback actionable and easier to track across releases.

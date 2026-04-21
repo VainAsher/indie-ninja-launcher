@@ -83,3 +83,17 @@ Attach logs from `user_data/logs/` in your feedback report and include:
 **How do I replay a session?**
 
 Launcher `Dev Tools` -> `Launch Replay`.
+
+---
+
+## Community
+
+**How can I help while the game is still in development?**
+
+The quickest way:
+
+1. Play a short session
+2. Report one bug, confusion point, or positive highlight
+3. Include version, mode, and repro steps
+
+See [Community Guide](community.md) for the full loop.

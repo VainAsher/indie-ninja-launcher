@@ -1,6 +1,7 @@
 # Changelog
 
 Player-facing release notes for launcher distribution lanes.
+This is the quickest way to see how community feedback is turning into updates.
 
 For full technical details, see the game repo changelog:
 [indie-ninja-adventures/docs/CHANGELOG.md](https://github.com/VainAsher/indie-ninja-adventures/blob/main/docs/CHANGELOG.md)

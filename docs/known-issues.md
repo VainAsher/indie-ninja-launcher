@@ -1,6 +1,8 @@
 # Known Issues
 
 Current player-facing issues and operational caveats.
+This page is intentionally transparent so players know what is known, what is fixed,
+and what still needs community validation.
 
 ---
 

@@ -8,6 +8,12 @@
 
 The launcher will then install/update current game runtime assets.
 
+New player path:
+
+1. Download launcher
+2. Let launcher install/update runtime assets
+3. Press Play and start with Campaign
+
 ---
 
 ## Windows SmartScreen Warning

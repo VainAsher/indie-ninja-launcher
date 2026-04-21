@@ -23,6 +23,19 @@ multiplayer setup, and issue reporting.
 - [FAQ](faq.md) - Common questions
 - [Known Issues](known-issues.md) - Current bugs and workarounds
 - [Changelog](changelog.md) - Player-facing release notes
+- [Community Guide](community.md) - How to help during development
+
+---
+
+## Join The Journey
+
+If you want to help the game grow while it is still in development:
+
+1. Play a short session (15-30 minutes)
+2. Report one clear issue or one fun highlight
+3. Check changelog updates to see what changed next
+
+Small, consistent feedback from real players is more useful than long one-off reports.
 
 ---
 
