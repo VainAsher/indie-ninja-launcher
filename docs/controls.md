@@ -1,76 +1,27 @@
 # Controls
 
-All controls use keyboard. Gamepad support is planned for a future update.
+Controls are keyboard-first and continue to evolve between pre-alpha releases.
 
-Controls can be rebound in the **Settings** menu (ESC → Settings → Key Bindings).
+The authoritative keybind source is always in-game:
 
----
-
-## Movement
-
-| Action | Default Key |
-|--------|-------------|
-| Move left | `A` / `Left Arrow` |
-| Move right | `D` / `Right Arrow` |
-| Jump | `W` / `Up Arrow` / `Space` |
-| Crouch / Stealth | `S` / `Down Arrow` |
-| Fast fall | `S` / `Down` while airborne |
-| Slow walk | Hold `Left Shift` while moving |
+- Press `F1` for the live controls overlay
+- Open pause/settings to review or adjust bindings
 
 ---
 
-## Combat
+## Launcher Controls
 
-| Action | Default Key |
-|--------|-------------|
-| Attack (3-hit combo) | `J` |
-| Air attack | `J` while airborne |
-| Dash attack | `J` during dash |
-| Throw shuriken | `K` |
-| Teleport | `L` |
-| Ninjutsu (special) | `U` |
+Multiplayer and launch actions are handled in the launcher UI:
 
----
-
-## Movement Abilities
-
-| Action | Default Key |
-|--------|-------------|
-| Dash | `Left Shift` (tap) |
-| Wall jump | `W` / `Space` while against a wall |
-| Double jump | `W` / `Space` again while airborne |
-
----
-
-## Interface
-
-| Action | Default Key |
-|--------|-------------|
-| Pause | `Escape` |
-| Inventory | `I` |
-| Minimap | `M` |
-| Full map | `Tab` |
-| Confirm (menu) | `Enter` / `J` |
-| Back (menu) | `Escape` |
-
----
-
-## Debug / Dev (Development Builds Only)
-
-| Action | Key |
-|--------|-----|
-| Toggle debug overlay | `F1` |
-| Toggle hitboxes | `F2` |
-| Slow motion | `F3` |
-| Cycle camera mode | `C` |
-
----
-
-## Multiplayer (Launcher)
-
-Multiplayer is launched from the launcher, not from in-game menus:
-
-- **Host a game**: Open launcher → Host Game → set port → Launch
-- **Join a game**: Open launcher → Join Game → enter host IP:port → Launch
+- **Host + Play**: starts server and joins locally
+- **Join Game**: connects to `host:port`
+- **Start Server**: host server without auto-joining (advanced/testing flow)
 
 See the [Multiplayer Guide](multiplayer.md) for details.
+
+---
+
+## In-Game Tips
+
+- `Esc` opens pause/back menus.
+- If bindings look wrong after an update, open the controls overlay (`F1`) and verify the active map.

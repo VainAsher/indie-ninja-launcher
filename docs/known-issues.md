@@ -1,54 +1,55 @@
 # Known Issues
 
-Current known issues in the latest release. This page is updated with each release.
+Current player-facing issues and operational caveats.
 
 ---
 
-## v0.8.0 Known Issues
+## Launcher Runtime vs Game Runtime Tags
 
-### Boss AI Not Implemented
+**Severity:** Low  
+Launcher binary and mirrored game assets are versioned on separate lanes:
 
-**Severity:** Medium (feature gap, not a crash)
+- `v1.x` -> launcher runtime (`ninja_dash_launcher.exe`)
+- `v0.x` -> mirrored game runtime assets (`ninja-client-all.jar`, `ninja-server-all.jar`)
 
-Boss rooms generate and bosses spawn, but they have no attack patterns or phase transitions. Boss missions can be "completed" by destroying the boss entity, but there is no actual boss encounter.
-
-**Status:** Planned for a future update (Phase 8).
-
----
-
-### Multiplayer: Minor Entity Desync
-
-**Severity:** Low (cosmetic / non-blocking)
-
-In multiplayer, enemy AI runs independently on each client, which can cause slight positional differences for enemies between clients. Pickup collection and enemy kills are now synced (v0.8.0), but AI movement divergence remains.
-
-**Workaround:** LAN play minimises observable desync. Full server-authoritative AI is planned for Phase 3b.
+If latest `v0.x` release has no launcher exe, use the newest `v1.x` launcher runtime.
 
 ---
 
-### BGM / Music Not Implemented
+## Java Requirement For Current Game Runtime
 
-**Severity:** Low
+**Severity:** Medium (setup blocker)  
+Current game runtime assets are JAR-based and require Java 21+.
 
-The game has SFX (12 events) but no background music. AudioManager supports BGM; music files and loop wiring are planned.
-
-**Workaround:** Play your own music in the background.
+**Workaround:** Install Java 21 LTS (Temurin recommended) and relaunch.
 
 ---
 
-### Gamepad Not Supported
+## Internet Hosting Requires Manual Network Setup
 
-**Severity:** Low
+**Severity:** Medium (connectivity)  
+Friends outside your LAN cannot join unless host network rules are configured.
 
-Keyboard only in v0.8.0. Gamepad support (pygame.joystick) is planned.
+**Workaround:** Allow firewall prompts and forward TCP port `7777` to host PC.
 
-**Workaround:** Use a keyboard-to-gamepad mapper (e.g. JoyToKey, Steam Input).
+---
+
+## Long Report Bodies On Older Launcher Builds
+
+**Severity:** Low  
+Older launcher builds may fail to open prefilled feedback URLs when logs make the URL too long.
+
+**Workaround:** Update launcher runtime (`v1.x`) or submit shorter report text.
 
 ---
 
 ## Reporting New Issues
 
-If you find a bug not listed here, please report it at
-[indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback/issues/new/choose).
+Report at
+[indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback/issues/new/choose)
+with:
 
-Include your game version, OS, and steps to reproduce.
+- version tag
+- mode/context
+- repro steps
+- optional `user_data/logs` snippet

@@ -1,92 +1,78 @@
 # Multiplayer Guide
 
-Indie Ninja Adventures supports 1–4 players online.
+Shadow Ascent supports 1-4 player sessions.
 
-Multiplayer is authoritative-server based: one player hosts, others connect. The host's machine runs the game simulation.
+One player hosts, others connect to that host.
 
 ---
 
-## How to Host
+## How To Host
 
 1. Open the launcher
 2. Click **Host Game**
-3. Set the port (default: **7777**)
-4. Set the maximum number of players (1–4)
-5. Click **Launch**
-6. Share your IP address with other players
+3. Set the port (default: `7777`)
+4. Click **Host + Play**
+5. Share your IP with other players
 
-For LAN games: share your local IP (e.g. `192.168.1.5`).
-For internet games: share your public IP and ensure port 7777 is forwarded on your router.
+For LAN games, share local IP (example: `192.168.1.5`).
+For internet games, share public IP and forward TCP `7777`.
 
 ---
 
-## How to Join
+## How To Join
 
 1. Open the launcher
 2. Click **Join Game**
-3. Enter the host's IP address and port: `192.168.1.5:7777`
+3. Enter `host:port` (example: `192.168.1.5:7777`)
 4. Click **Launch**
 
 ---
 
 ## Port Forwarding (Internet Play)
 
-For players to connect from the internet (not LAN), the host must forward **port 7777 TCP** on their router to their PC's local IP.
-
-Steps vary by router — search "port forwarding [your router model]" for instructions.
-
----
-
-## Player Colours
-
-Each player slot gets a unique colour:
-
-| Slot | Colour |
-|------|--------|
-| 0 (Host) | Default ninja colours |
-| 1 | Red |
-| 2 | Green |
-| 3 | Purple |
+To accept internet players, the host must forward TCP `7777` from router to host PC.
+Router steps vary by model.
 
 ---
 
 ## Replay System
 
-Sessions are recorded automatically. Replays are saved to `user_data/replays/`.
+Replays are available in launcher Dev Tools and stored in `user_data/replays/`.
 
 To replay a session:
-1. Open the launcher
-2. Go to **Dev Tools** tab
-3. Click **Launch Replay** and select a replay file
 
-Or from the command line:
-```
-ninja_dash.exe --replay path\to\session.json
-```
+1. Open launcher
+2. Go to **Dev Tools**
+3. Click **Launch Replay**
+4. Select a replay file
 
-Replays are deterministic — they replay exact inputs, not a video recording.
+Replays are deterministic input playback, not video captures.
 
 ---
 
-## Known Limitations (v0.8.0)
+## Current Notes
 
-- Boss AI is not implemented — boss rooms exist but bosses don't attack
-- LAN play recommended for best performance — internet play works but may have lag
-- All players must use the same game version
+- LAN is the best baseline for low-latency playtesting.
+- All players must run the same game version.
+- Host firewall and router setup is required for internet sessions.
 
 ---
 
 ## Troubleshooting
 
-**Can't connect:**
-- Check that the host has port 7777 open in Windows Firewall
-- Confirm the IP address is correct
-- Try LAN first to rule out routing issues
+**Cannot connect**
 
-**Lag or desync:**
-- Phase 3b (client prediction + lag compensation) is planned for a future update
-- LAN play will always be smoother than internet play at this stage
+- Confirm host IP and port
+- Confirm firewall access on host
+- Test LAN first
 
-**Game crashes on connect:**
-- Check game version — all players must use the same version
-- Check `user_data/logs/` for error details and report at [indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback/issues/new/choose)
+**Lag/desync symptoms**
+
+- Confirm same build across all players
+- Prefer LAN when diagnosing
+
+**Crash on connect**
+
+- Check logs in `user_data/logs/`
+- Report with build tag and repro steps at:
+  [indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback/issues/new/choose)

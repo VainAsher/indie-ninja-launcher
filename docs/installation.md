@@ -2,11 +2,11 @@
 
 ## Download
 
-1. Go to [Releases](https://github.com/VainAsher/indie-ninja-launcher/releases/latest)
-2. Download `ninja_dash_launcher.exe`
-3. Run it — no installation required
+1. Go to [Releases](https://github.com/VainAsher/indie-ninja-launcher/releases)
+2. Download `ninja_dash_launcher.exe` from the latest launcher-runtime tag (`v1.x`)
+3. Run it (no installer required)
 
-The launcher will automatically download the game on first run.
+The launcher will then install/update current game runtime assets.
 
 ---
 
@@ -21,30 +21,24 @@ This is normal for unsigned executables. To proceed:
 1. Click **More info**
 2. Click **Run anyway**
 
-The launcher and game are open-source and verified with SHA256 checksums.
+This is expected for unsigned binaries.
 
 ---
 
-## Verifying the Download (Optional)
+## Java Requirement (Current Runtime)
 
-For security-conscious users, you can verify the SHA256 checksum:
+Current game-content releases are JAR-based (`ninja-client-all.jar`, `ninja-server-all.jar`).
+Install Java 21+ before launching if prompted by the launcher.
 
-1. Download `ninja_dash_launcher.exe` and `ninja_dash.exe.sha256` from the release
-2. Open PowerShell and run:
-
-```powershell
-$hash = (Get-FileHash ninja_dash.exe -Algorithm SHA256).Hash.ToLower()
-$expected = (Get-Content ninja_dash.exe.sha256).Split(' ')[0]
-if ($hash -eq $expected) { "Verified OK" } else { "MISMATCH - do not run" }
-```
+Recommended: Eclipse Temurin 21 LTS.
 
 ---
 
 ## Firewall / Antivirus
 
-For **multiplayer**, the game needs network access:
+For multiplayer hosting:
 
-- Allow `ninja_dash.exe` through Windows Firewall when prompted
+- Allow Java / launcher network access through Windows Firewall when prompted
 - If playing over the internet (not LAN), the host needs to forward port **7777 TCP** on their router
 
 ---
@@ -56,16 +50,23 @@ For **multiplayer**, the game needs network access:
 | OS | Windows 10 (64-bit) |
 | CPU | Intel i3 / AMD equivalent |
 | RAM | 4 GB |
-| Storage | 200 MB |
-| Network | Required for multiplayer only |
+| Storage | 300 MB+ |
+| Java | 21+ (for current JAR runtime) |
+| Network | Required for release checks and multiplayer |
 
 ---
 
 ## Updating
 
-The launcher checks for updates automatically on startup. Click **Update** when prompted.
+The launcher checks for updates automatically on startup.
+Click **Install/Update** when prompted.
 
-If the launcher itself needs updating, download the latest `ninja_dash_launcher.exe` from the releases page.
+Update lanes are split:
+
+- `v1.x` tags: launcher runtime (`ninja_dash_launcher.exe`)
+- `v0.x` tags: mirrored game runtime assets (client/server JARs + docs archive)
+
+If your launcher binary is old, download the newest `v1.x` launcher runtime manually.
 
 ---
 
@@ -73,7 +74,7 @@ If the launcher itself needs updating, download the latest `ninja_dash_launcher.
 
 | File | Location |
 |------|----------|
-| Game saves | `%APPDATA%\indie_ninja_adventures\saves\` or next to the .exe in `user_data\saves\` |
+| Game saves | `user_data\saves\` under your configured game directory |
 | Logs | `user_data\logs\` |
 | Replays | `user_data\replays\` |
-| Settings | `user_data\settings\` |
+| Settings | `user_data\settings\settings.json` |

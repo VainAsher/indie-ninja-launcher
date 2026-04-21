@@ -1,42 +1,50 @@
-# Indie Ninja Adventures — Launcher
+# Indie Ninja Adventures - Launcher Distribution
 
-**Vain Asher Gaming** | Download, launch, and stay updated automatically.
+Public distribution and player-facing docs for Shadow Ascent.
 
 ---
 
 ## Download
 
-Get the latest launcher from [Releases](https://github.com/VainAsher/indie-ninja-launcher/releases/latest).
+Use [Releases](https://github.com/VainAsher/indie-ninja-launcher/releases) and pick assets based on what you need:
 
-**`ninja_dash_launcher.exe`** — Windows standalone, no install required.
+- `ninja_dash_launcher.exe` from launcher-runtime tags (`v1.x`, currently `v1.1.0`)
+- mirrored game runtime assets from game-content tags (`v0.x`), including:
+  - `ninja-client-all.jar`
+  - `ninja-server-all.jar`
+  - docs archive zip
 
----
-
-## What the Launcher Does
-
-- Checks for game updates on startup and downloads the latest version
-- Verifies the downloaded `.exe` with SHA256 before running
-- Launch modes: Solo Play, Host a multiplayer game, Join a game
-- Submit bug reports and feedback directly from the launcher
-- Dev Tools: profiler benchmark, log viewer, replay launcher
+If the latest release is a `v0.x` game-content mirror and does not include the launcher exe,
+download `ninja_dash_launcher.exe` from the latest `v1.x` launcher-runtime release.
 
 ---
 
-## System Requirements
+## What The Launcher Does
+
+- Checks for new game releases and installs updates
+- Supports both EXE-era assets and current JAR-based runtime assets
+- Launches solo, host, and join flows
+- Opens prefilled bug/feedback reports to the feedback repo
+- Includes Dev Tools for logs, replays, and diagnostics
+
+---
+
+## Current Requirements
 
 - Windows 10 or 11 (64-bit)
-- No Python or additional software required
-- Internet connection for update checks
+- Java 21+ for current JAR-based game runtime (`v0.12+`)
+- Internet connection for release checks and downloads
 
 ---
 
 ## Quick Start
 
-1. Download `ninja_dash_launcher.exe` from [Releases](https://github.com/VainAsher/indie-ninja-launcher/releases/latest)
-2. Run it — Windows may show a SmartScreen warning (click "More info" → "Run anyway")
-3. The launcher will download the game automatically on first run
+1. Download `ninja_dash_launcher.exe` from the latest launcher-runtime release (`v1.x`)
+2. Run it (SmartScreen may require `More info -> Run anyway`)
+3. Click Install/Update to pull the latest game runtime assets
+4. Launch solo or multiplayer from the Play tab
 
-See the **[Player Guide](docs/installation.md)** for full setup instructions.
+See [Installation Guide](docs/installation.md) for full setup.
 
 ---
 
@@ -54,14 +62,16 @@ See the **[Player Guide](docs/installation.md)** for full setup instructions.
 
 ## Reporting Issues
 
-Found a bug? Use the **Report** tab in the launcher, or go to
+Use the launcher's Report tab, or file directly at
 [indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback/issues/new/choose).
 
 ---
 
 ## For Developers
 
-The launcher source lives in the private game repo: `VainAsher/indie-ninja-adventures/launcher/launcher.py`.
-This public repo distributes the compiled `.exe` only.
+Launcher source is maintained in the private game repo:
+`VainAsher/indie-ninja-adventures/launcher/launcher.py`.
 
-See [SETUP.md](SETUP.md) for one-time repo configuration.
+This public repo is distribution + player documentation.
+
+See [SETUP.md](SETUP.md) for repo setup.

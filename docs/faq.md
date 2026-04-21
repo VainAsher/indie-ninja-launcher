@@ -2,41 +2,44 @@
 
 ## Installation
 
-**The launcher won't run — Windows says it's unsafe.**
+**The launcher will not run. Windows says it is unsafe.**
 
-This is Windows SmartScreen for unsigned executables. Click **More info** → **Run anyway**. The launcher is safe.
+This is SmartScreen for unsigned binaries. Click `More info`, then `Run anyway`.
 
-**The game doesn't download automatically.**
+**Install/Update does not download game files.**
 
-Check your internet connection. If the launcher shows an error, try running it as administrator. If it still fails, download `ninja_dash.exe` directly from the [releases page](https://github.com/VainAsher/indie-ninja-launcher/releases/latest) and place it in the same folder as the launcher.
+Check the following:
 
-**My antivirus flags the exe.**
+1. Internet connection is stable
+2. Java 21+ is installed
+3. Firewall/proxy is not blocking GitHub downloads
+4. You are using a current launcher runtime (`v1.x`)
 
-PyInstaller-packaged executables sometimes trigger false positives. The source code is available in the game repository. If you're unsure, download the SHA256 checksum from the releases page and verify it manually.
+**My antivirus flags the launcher exe.**
+
+Unsigned PyInstaller builds can trigger false positives.
+Verify the source repo and allowlist if needed.
+
+**Report submission says the URL is too long.**
+
+Older launcher builds may hit browser URL limits when long log tails are attached.
+Update to latest launcher runtime (`v1.x`), or submit shorter text.
 
 ---
 
 ## Gameplay
 
-**How do I save my progress?**
+**How do I save progress?**
 
-Progress saves automatically after completing each mission. There is no manual save.
+Progress is auto-saved at game-defined checkpoints and transitions.
 
-**Where is my save file?**
+**Where are saves stored?**
 
-In the `user_data\saves\` folder next to the game exe. Or check `%APPDATA%\indie_ninja_adventures\saves\`.
+`user_data/saves/` under your configured game directory.
 
-**I'm stuck in a mission — how do I exit?**
+**How do I leave a mission?**
 
-Press `ESC` to pause, then select **Quit to Menu**. You'll restart the mission from the beginning next time.
-
-**How do I unlock abilities?**
-
-Complete missions in the Campaign to earn abilities. Some abilities are required to access later regions (ability gates on the hub portals).
-
-**The boss room is empty.**
-
-Boss AI is not yet implemented in v0.8.0. Boss rooms generate and the framework exists, but bosses don't have attack patterns yet. This is a known gap — see the [Known Issues](known-issues.md) page.
+Press `Esc` and use `Quit to Menu`.
 
 ---
 
@@ -44,28 +47,30 @@ Boss AI is not yet implemented in v0.8.0. Boss rooms generate and the framework 
 
 **How do I play with friends?**
 
-Use the launcher's **Host Game** or **Join Game** buttons. See the [Multiplayer Guide](multiplayer.md).
+Use launcher `Host + Play` or `Join Game`.
+See [Multiplayer Guide](multiplayer.md).
 
-**My friend can't connect to my hosted game.**
+**Friends cannot join my hosted game.**
 
-For LAN: make sure you're both on the same network and sharing the correct local IP.
-For internet: you need to forward port 7777 TCP on your router.
+For LAN, confirm local IP and same network.
+For internet, forward TCP `7777` and allow firewall access.
 
-**The game desyncs in multiplayer.**
+**We get lag or desync symptoms.**
 
-Desync issues are known at this stage (Phase 3 networking). LAN play is recommended. Report persistent issues at [indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback).
+Use LAN as baseline, confirm same game version across players, then report logs if issue persists.
 
 ---
 
 ## Performance
 
-**The game runs at low FPS.**
+**Performance feels unstable.**
 
-The game targets 60 FPS. If you're seeing consistently low FPS, check the [Known Issues](known-issues.md) page. You can also report performance issues at [indie-ninja-feedback](https://github.com/VainAsher/indie-ninja-feedback).
+Attach logs from `user_data/logs/` in your feedback report and include:
 
-**The game stutters in certain zones.**
-
-Large zones with many enemies can cause brief stutters. This is being monitored. Report with your system specs and zone name.
+- version tag
+- mode (solo/host/join)
+- area or mission context
+- reproducible steps
 
 ---
 
@@ -73,11 +78,8 @@ Large zones with many enemies can cause brief stutters. This is being monitored.
 
 **Where are replays saved?**
 
-`user_data\replays\` next to the game exe.
+`user_data/replays/` in your configured game directory.
 
-**How do I watch a replay?**
+**How do I replay a session?**
 
-Use the **Dev Tools** tab in the launcher → **Launch Replay**, or run:
-```
-ninja_dash.exe --replay path\to\session.json
-```
+Launcher `Dev Tools` -> `Launch Replay`.
