@@ -1,15 +1,17 @@
 name: Release Launcher
 
-# Triggered by pushing a version tag: git tag v1.1.0 && git push origin v1.1.0
-# Builds ninja_dash_launcher.exe and attaches it to a GitHub Release.
-#
-# NOTE: The launcher source (launcher/launcher.py) and PyInstaller spec
-# (build/ninja_dash_launcher.spec) must be copied from the game repo before building.
+# Manual lane for building and publishing ninja_dash_launcher.exe.
+# This repo currently requires launcher source/spec files to be mirrored before build:
+#   - launcher/launcher.py
+#   - build/ninja_dash_launcher.spec
 
 on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (example: v1.1.1)"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -23,11 +25,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Validate required build files
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "launcher/launcher.py")) {
+            Write-Error "Missing launcher/launcher.py. Sync launcher source into this repo before running release workflow."
+            exit 1
+          }
+          if (-not (Test-Path "build/ninja_dash_launcher.spec")) {
+            Write-Error "Missing build/ninja_dash_launcher.spec. Sync launcher spec into this repo before running release workflow."
+            exit 1
+          }
+
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -41,8 +54,8 @@ jobs:
       - name: Verify launcher exe exists
         shell: pwsh
         run: |
-          if (-not (Test-Path "build\dist\ninja_dash_launcher.exe")) {
-            Write-Error "Missing: build\dist\ninja_dash_launcher.exe"
+          if (-not (Test-Path "build/dist/ninja_dash_launcher.exe")) {
+            Write-Error "Missing: build/dist/ninja_dash_launcher.exe"
             exit 1
           }
           Write-Host "Launcher exe built successfully."
@@ -50,9 +63,10 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
         shell: bash
         run: |
-          gh release create "${{ github.ref_name }}" \
-            --title "Indie Ninja Adventures Launcher ${{ github.ref_name }}" \
+          gh release create "$RELEASE_TAG" \
+            --title "Indie Ninja Adventures Launcher $RELEASE_TAG" \
             --generate-notes \
             "build/dist/ninja_dash_launcher.exe"
