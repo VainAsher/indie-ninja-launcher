@@ -1,38 +1,107 @@
 name: Receive Game Release
 
 # Triggered by repository_dispatch from the game repo when a new game version is released.
-# Posts a release announcement issue for launcher users.
+# Mirrors game release assets into this public distribution repo and posts an announcement issue.
 
 on:
   repository_dispatch:
     types: [game-release]
 
 permissions:
-  contents: read
+  contents: write
   issues: write
 
+env:
+  GAME_REPO: VainAsher/indie-ninja-adventures
+
 jobs:
-  announce-release:
-    name: Announce New Game Release
+  mirror-and-announce:
+    name: Mirror Game Assets and Announce
     runs-on: ubuntu-latest
 
     steps:
+      - name: Resolve release tag from dispatch payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="$(jq -r '.client_payload.version // empty' "$GITHUB_EVENT_PATH")"
+          if [ -z "$TAG" ]; then
+            echo "Missing client_payload.version in repository_dispatch payload"
+            exit 1
+          fi
+          echo "GAME_TAG=$TAG" >> "$GITHUB_ENV"
+          echo "MIRROR_RELEASE_URL=https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}" >> "$GITHUB_ENV"
+
+      - name: Download game release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf mirrored-assets
+          mkdir -p mirrored-assets
+          gh release download "$GAME_TAG" -R "$GAME_REPO" -D mirrored-assets
+          if [ -z "$(ls -A mirrored-assets)" ]; then
+            echo "No assets downloaded for tag $GAME_TAG from $GAME_REPO"
+            exit 1
+          fi
+          ls -lah mirrored-assets
+
+      - name: Ensure launcher release exists for tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$GAME_TAG" >/dev/null 2>&1; then
+            echo "Launcher release $GAME_TAG already exists"
+          else
+            gh release create "$GAME_TAG" \
+              --title "Indie Ninja Adventures $GAME_TAG" \
+              --notes "Mirrored distribution assets from $GAME_REPO release $GAME_TAG."
+          fi
+
+      - name: Upload mirrored assets to launcher release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release upload "$GAME_TAG" mirrored-assets/* --clobber
+
       - name: Post release announcement issue
         uses: actions/github-script@v7
+        env:
+          GAME_TAG: ${{ env.GAME_TAG }}
+          MIRROR_RELEASE_URL: ${{ env.MIRROR_RELEASE_URL }}
         with:
           github-token: ${{ github.token }}
           script: |
-            const version = context.payload.client_payload.version;
-            const releaseUrl = context.payload.client_payload.release_url;
+            const version = process.env.GAME_TAG;
+            const releaseUrl = process.env.MIRROR_RELEASE_URL;
+            const title = `Game Release: ${version}`;
+
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            const existing = openIssues.find((i) => i.title === title);
+            if (existing) {
+              core.info(`Announcement issue already open (#${existing.number}); skipping create.`);
+              return;
+            }
 
             const issue = await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Game Release: ${version}`,
+              title,
               body: [
                 `## Indie Ninja Adventures ${version} is now available!`,
                 '',
-                `**Download**: [GitHub Release](${releaseUrl})`,
+                `**Download**: [Launcher release assets](${releaseUrl})`,
                 '',
                 '### How to update',
                 '1. Open the launcher - it will detect the new version automatically',
@@ -44,4 +113,4 @@ jobs:
               labels: ['release'],
             });
 
-            console.log(`Created announcement issue #${issue.data.number}`);
+            core.info(`Created announcement issue #${issue.data.number}`);
